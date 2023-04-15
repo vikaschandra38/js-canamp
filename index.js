@@ -2,11 +2,25 @@
 import './style.css';
 
 var video = document.getElementById('my-video');
-
-video.addEventListener('click', function () {
-  if (video.muted) {
-    video.muted = false;
-  } else {
-    video.muted = true;
-  }
+var playBtn = document.querySelector('#play-button');
+video.addEventListener('click', function (event) {
+  playBtn.style.visibility = 'hidden';
+  video.currentTime = 0;
+  video.muted = false;
+  video.play();
 });
+
+playBtn.addEventListener('click', function () {
+  video.click();
+});
+
+const observer = new IntersectionObserver(function (entries) {
+  entries.forEach((entry) => {
+    if (!entry.isIntersecting) {
+      playBtn.style.visibility = 'visible';
+      video.muted = true;
+    }
+  });
+});
+
+observer.observe(video);
